@@ -39,9 +39,9 @@ node server.js
 
 | Method | Endpoint                    | Description               |
 | ------ | --------------------------- | ------------------------- |
-| GET    | `/api/articles`             | Get all articles          |
-| POST   | `/api/articles/scrape/beyondchats`      | Scrape new articles       |
-| POST   | `/api/articles/rewrite/:id` | Rephrase article using AI |
+| GET    | `/api/articles`             | Get the 5 stored articles          |
+| POST   | `/api/articles/scrape/beyondchats`      | Scrape 5 old articles       |
+| POST   | `/api/articles/rewrite/:id` | Search on Google and Rephrase article using AI |
 
 
 ## Frontend Setup

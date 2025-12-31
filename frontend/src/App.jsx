@@ -7,50 +7,59 @@ import ArticleCard from "./components/ArticleCard";
 
 export default function App() {
   const [articles, setArticles] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true); // page load
+  const [scraping, setScraping] = useState(false); // button action
   const [tab, setTab] = useState("scraped"); // scraped | published
 
-  // ✅ ONLY fetch from DB
+  // ✅ Fetch from DB only
   const loadArticles = async () => {
     try {
-      const data = await getArticles();
-      setArticles(Array.isArray(data) ? data : []);
+      const res = await getArticles();
+
+      // 🔥 Normalize response
+      const list =
+        Array.isArray(res) ? res :
+        Array.isArray(res?.articles) ? res.articles :
+        [];
+
+      setArticles(list);
     } catch (err) {
       console.error("Failed to load articles:", err);
+    } finally {
+      setInitialLoading(false);
     }
   };
 
-  // ✅ Scrape ONLY when user clicks button
+  // ✅ Scrape on button click only
   const handleScrape = async () => {
-    setLoading(true);
     try {
+      setScraping(true);
       await scrapeArticles();
-      await loadArticles(); // refresh DB data
+      await loadArticles(); // re-fetch after scraping
     } catch (err) {
       console.error("Scrape failed:", err);
     } finally {
-      setLoading(false);
+      setScraping(false);
     }
   };
 
-  // ✅ Page load → fetch only
+  // ✅ Page load → check DB
   useEffect(() => {
     loadArticles();
   }, []);
 
-  // ✅ Filter by status
+  // ✅ Tabs logic
   const filtered =
-  tab === "scraped"
-    ? articles // show ALL articles
-    : articles.filter(article => article.status === "published");
-
+    tab === "scraped"
+      ? articles
+      : articles.filter(a => a.status === "published");
 
   return (
     <div className="min-h-screen bg-[#0b0f19] text-white">
       <Header />
 
       <div className="max-w-6xl mx-auto px-6">
-        <ActionCard loading={loading} onScrape={handleScrape} />
+        <ActionCard loading={scraping} onScrape={handleScrape} />
 
         <Tabs
           originalCount={articles.length}
@@ -59,27 +68,32 @@ export default function App() {
           setTab={setTab}
         />
 
-        {loading && (
+        {/* Initial DB check */}
+        {initialLoading && (
           <p className="text-center mt-10 text-gray-400">
-            Loading articles...
+            Checking existing articles...
           </p>
         )}
 
-        {!loading && filtered.length === 0 && (
+        {/* Empty DB */}
+        {!initialLoading && articles.length === 0 && (
           <p className="text-center mt-10 text-gray-400">
-            No articles found. Click "Scrape Articles" to fetch new ones.
+            No articles found. Click <b>Start Scraping</b> to fetch articles.
           </p>
         )}
 
-        <div className="grid md:grid-cols-3 gap-6 mt-8">
-          {filtered.map(article => (
-            <ArticleCard
-              key={article._id}
-              article={article}
-              onUpdated={setArticles}
-            />
-          ))}
-        </div>
+        {/* Articles */}
+        {!initialLoading && filtered.length > 0 && (
+          <div className="grid md:grid-cols-3 gap-6 mt-8">
+            {filtered.map(article => (
+              <ArticleCard
+                key={article._id}
+                article={article}
+                onUpdated={setArticles}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

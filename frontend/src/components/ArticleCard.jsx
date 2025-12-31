@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { rewriteArticle, getArticles } from "../api/articlesApi";
 import ArticlePreviewModal from "./ArticlePreviewModal";
+import { formatContent } from "../utils/formatContent";
 
 export default function ArticleCard({ article, onUpdated }) {
   const [loading, setLoading] = useState(false);
@@ -21,7 +22,6 @@ export default function ArticleCard({ article, onUpdated }) {
     }
   };
 
-  // Format date nicely
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
     return date.toLocaleDateString() + " " + date.toLocaleTimeString();
@@ -29,10 +29,9 @@ export default function ArticleCard({ article, onUpdated }) {
 
   return (
     <>
-      {/* CARD CONTAINER */}
       <div className="group relative flex flex-col h-120 rounded-2xl border border-white/10 bg-linear-to-br from-[#0f1624] via-[#131b2e] to-[#0f1624] shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-indigo-500/10 hover:border-white/20">
-        
-        {/* TOP BADGE & ACTION ROW */}
+
+        {/* Header Badge & Expand Button */}
         <div className="absolute top-5 left-5 right-5 flex justify-between items-start z-10">
           <span
             className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm backdrop-blur-md border ${
@@ -55,26 +54,33 @@ export default function ArticleCard({ article, onUpdated }) {
           </button>
         </div>
 
-        {/* TITLE AREA */}
+        {/* Title */}
         <div className="mt-16 px-6">
           <h3 className="text-lg font-bold text-white leading-snug line-clamp-2 min-h-14 group-hover:text-indigo-200 transition-colors">
-            {isRephrased ? article.title : article.title}
+            {article.title}
           </h3>
         </div>
 
-        {/* CONTENT AREA (With Custom Scrollbar) */}
+        {/* Content (With HTML Rendering support) */}
         <div className="flex-1 px-6 mt-4 overflow-y-auto custom-scrollbar pr-2">
-          <p className="text-sm text-slate-400 leading-relaxed whitespace-pre-line font-light">
-            {isRephrased ? article.rewrittenContent : article.content}
-          </p>
+          <div
+            className="prose prose-sm prose-invert max-w-none text-slate-400 font-light prose-p:leading-relaxed prose-strong:text-slate-200 prose-headings:text-slate-200"
+            dangerouslySetInnerHTML={{
+              __html: formatContent(
+                isRephrased ? article.rewrittenContent : article.content
+              ),
+            }}
+          />
         </div>
 
-        {/* FOOTER AREA */}
+        {/* Footer */}
         <div className="px-6 pb-6 pt-4 mt-2 border-t border-white/5 bg-black/10 rounded-b-2xl">
           <div className="flex justify-between items-center text-xs font-medium text-slate-500 mb-4">
             <span>{isRephrased ? "UPDATED" : "CREATED"}</span>
             <span className="text-slate-400 font-mono">
-              {isRephrased ? formatDate(article.updatedAt) : formatDate(article.createdAt)}
+              {isRephrased
+                ? formatDate(article.updatedAt)
+                : formatDate(article.createdAt)}
             </span>
           </div>
 
@@ -86,7 +92,7 @@ export default function ArticleCard({ article, onUpdated }) {
             >
               <div className="flex items-center justify-center gap-2">
                 {loading ? (
-                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
                 ) : (
                   <>
                     <svg className="w-4 h-4 text-indigo-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -98,14 +104,13 @@ export default function ArticleCard({ article, onUpdated }) {
               </div>
             </button>
           ) : (
-             <div className="w-full py-3 text-center text-xs font-medium text-emerald-400/80 bg-emerald-500/5 rounded-xl border border-emerald-500/10">
-                Article Successfully Enhanced
-             </div>
+            <div className="w-full py-3 text-center text-xs font-medium text-emerald-400/80 bg-emerald-500/5 rounded-xl border border-emerald-500/10">
+              Article Successfully Enhanced
+            </div>
           )}
         </div>
       </div>
 
-      {/* PREVIEW MODAL */}
       {showPreview && (
         <ArticlePreviewModal
           article={article}
@@ -113,7 +118,7 @@ export default function ArticleCard({ article, onUpdated }) {
         />
       )}
 
-      {/* CSS for custom scrollbar (Add to global CSS or keep inline style object if using styled-components) */}
+      {/* Styles for scrollbar */}
       <style>{`
         .custom-scrollbar::-webkit-scrollbar {
           width: 4px;

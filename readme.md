@@ -5,7 +5,12 @@ The project consists of a **Node.js backend** and a **React frontend**.
 
 ---
 
-## 📦 Project Setup Guide
+## Backend Deployed on render : https://beyondchats-fsyp.onrender.com
+## Frontend deployed on netlify : https://69554755152b43ef5145089e--animated-beignet-44cf89.netlify.app/
+
+
+
+## 📦 Project Local Setup Guide
 
 ###  Clone the Repository
 
@@ -57,13 +62,11 @@ cd frontend
 ```bash
 npm install
 ```
-### 4. Configure API Base URL
-
-#### Open the file: frontend/src/api/articlesApi.js
+### 4. Add environment variable for backend 
 
 #### Set the backend URL:
 ```bash
-const API_BASE_URL = "http://localhost:3000/api/articles/";
+const VITE_API_BASE_URL = "http://localhost:3000/api/articles/";
 ```
 
 ### Start Frontend
@@ -72,6 +75,8 @@ npm run dev
 ```
 
 ### Frontend will run on: http://localhost:5173
+
+
 
 
 

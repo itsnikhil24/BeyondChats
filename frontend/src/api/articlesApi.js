@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:3000/api/articles",
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
 export const scrapeArticles = async () => {
@@ -11,7 +11,6 @@ export const scrapeArticles = async () => {
 
 export const getArticles = async () => {
   const res = await api.get("/");
-  console.log("API getArticles response:", res);
   return res.data;
 };
 

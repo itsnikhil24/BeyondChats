@@ -3,7 +3,7 @@ export default function ActionCard({ loading, onScrape }) {
     <div className="relative mt-12 mb-12 group">
       
       {/* Background Glow Effect (Behind the card) */}
-      <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200" />
+      <div className="absolute -inset-1 bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200" />
 
       {/* Main Card Container */}
       <div className="relative bg-[#0f1624] border border-white/10 rounded-2xl p-12 text-center shadow-2xl overflow-hidden">
@@ -15,7 +15,7 @@ export default function ActionCard({ loading, onScrape }) {
           
           {/* Icon Container */}
           <div className="mb-6 relative">
-            <div className="h-20 w-20 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-blue-500/10 border border-indigo-500/20 flex items-center justify-center shadow-inner">
+            <div className="h-20 w-20 rounded-2xl bg-linear-to-br from-indigo-500/20 to-blue-500/10 border border-indigo-500/20 flex items-center justify-center shadow-inner">
               {loading ? (
                 <svg className="w-10 h-10 text-indigo-400 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -44,7 +44,7 @@ export default function ActionCard({ loading, onScrape }) {
           <button
             onClick={onScrape}
             disabled={loading}
-            className="group/btn relative inline-flex items-center justify-center px-8 py-3.5 text-base font-semibold text-white transition-all duration-200 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg hover:from-blue-500 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 focus:ring-offset-[#0f1624] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-indigo-500/25 hover:-translate-y-0.5"
+            className="group/btn relative inline-flex items-center justify-center px-8 py-3.5 text-base font-semibold text-white transition-all duration-200 bg-linear-to-r from-blue-600 to-indigo-600 rounded-lg hover:from-blue-500 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 focus:ring-offset-[#0f1624] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-indigo-500/25 hover:-translate-y-0.5"
           >
             {loading ? (
               <span className="flex items-center gap-2">

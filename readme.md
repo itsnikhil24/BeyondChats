@@ -6,7 +6,7 @@ The project consists of a **Node.js backend** and a **React frontend**.
 ---
 
 ## Backend Deployed on render : https://beyondchats-fsyp.onrender.com
-## Frontend deployed on netlify : https://69554755152b43ef5145089e--animated-beignet-44cf89.netlify.app/
+## Frontend deployed on netlify : https://animated-beignet-44cf89.netlify.app/
 
 
 

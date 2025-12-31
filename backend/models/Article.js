@@ -4,8 +4,8 @@ const articleSchema = new mongoose.Schema(
   {
     title: String,
     url: { type: String, unique: true },
-    content: String,               // original content
-    rewrittenContent: String,      // LLM output
+    content: String,             
+    rewrittenContent: String,      
     references: [String],
     status: {
       type: String,

@@ -5,11 +5,26 @@ async function searchGoogle(query) {
     engine: "google",
     q: query,
     api_key: process.env.SERP_API_KEY,
-    num: 5,
+    num: 10, // fetch more to filter better
   });
 
+  if (!res.organic_results) return [];
+
   return res.organic_results
-    .filter(r => r.link.includes("blog") || r.link.includes("article"))
+    .filter(r => {
+      const link = r.link?.toLowerCase() || "";
+
+      // ❌ exclude beyondchats
+      if (link.includes("beyondchats")) return false;
+
+      return (
+        link.includes("blog") ||
+        link.includes("article") ||
+        link.includes("medium.com") ||
+        link.includes("dev.to") ||
+        link.includes("substack.com")
+      );
+    })
     .slice(0, 2)
     .map(r => r.link);
 }

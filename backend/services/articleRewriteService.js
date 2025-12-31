@@ -7,23 +7,23 @@ async function rewriteAndPublish(article) {
     throw new Error("Article content missing");
   }
 
-  // 1️⃣ Google search
+ 
   const links = await searchGoogle(article.title);
 
-  // 2️⃣ Scrape competitors
+
   const competitorContent = [];
   for (const link of links) {
     const text = await scrapeCompetitor(link);
     if (text) competitorContent.push(text);
   }
 
-  // 3️⃣ Rewrite
+  //Rewrite
   const rewritten = await rewriteArticle(
     article.content,
     competitorContent
   );
 
-  // 4️⃣ Publish
+  //Publish
   article.rewrittenContent = rewritten;
   article.references = links;
   article.status = "published";

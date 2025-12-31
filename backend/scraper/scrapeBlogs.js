@@ -13,9 +13,9 @@ const client = axios.create({
 async function scrapeBlogs() {
   const BASE_URL = "https://beyondchats.com/blogs/";
 
-  /* -----------------------------
-     1️⃣ Find LAST page number
-  ------------------------------*/
+
+ 
+  
   const { data } = await client.get(BASE_URL);
   const $ = cheerio.load(data);
 
@@ -25,9 +25,7 @@ async function scrapeBlogs() {
     if (!isNaN(n)) lastPage = Math.max(lastPage, n);
   });
 
-  /* -----------------------------
-     2️⃣ Collect 5 OLDEST articles
-  ------------------------------*/
+
   const articles = [];
   let currentPage = lastPage;
 
@@ -66,14 +64,12 @@ async function scrapeBlogs() {
     currentPage--;
   }
 
-  /* -----------------------------
-     3️⃣ Scrape FULL content
-  ------------------------------*/
+
   for (const article of articles) {
     const res = await client.get(article.url);
     const $$$ = cheerio.load(res.data);
 
-    // remove noise
+ 
     $$$("script, style, nav, footer, header, aside, noscript").remove();
 
     // Elementor main content
@@ -81,7 +77,7 @@ async function scrapeBlogs() {
       .text()
       .trim();
 
-    // fallback safety
+
     if (!content || content.length < 500) {
       content = $$$("p")
         .map((_, el) => $(el).text())
@@ -92,7 +88,6 @@ async function scrapeBlogs() {
     article.content = content.replace(/\s+/g, " ").trim();
   }
 
-  console.log(`✅ Scraped ${articles.length} oldest articles with full content`);
   return articles;
 }
 

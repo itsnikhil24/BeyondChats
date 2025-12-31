@@ -16,9 +16,7 @@ exports.scrapeBeyondChats = async (req, res) => {
   res.json({ message: "Scraped & stored articles" });
 };
 
-/**
- * POST /api/articles/rewrite/:id
- */
+
 exports.rewriteSingleArticle = async (req, res) => {
   const article = await Article.findById(req.params.id);
 
